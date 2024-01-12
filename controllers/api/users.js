@@ -1,4 +1,4 @@
-const { getByPlaceholderText } = require("@testing-library/react");
+// /controllers/api/users.js
 const User = require("../../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
@@ -9,6 +9,7 @@ module.exports = {
   checkToken,
 };
 
+/*-- Helper Functions --*/
 function createJWT(user) {
   return jwt.sign(
     // data payload
@@ -26,7 +27,7 @@ async function create(req, res) {
     const token = createJWT(user);
     // Yes, we can use res.json to send back just a string
     // The client code needs to take this into consideration
-    res.json(token);
+    res.status(200).json(token);
   } catch (err) {
     // Client will check for non-2xx status code
     // 400 = Bad Request
@@ -48,9 +49,9 @@ async function login(req, res) {
       return res.status(401).json({ message: "Invalid credentials" });
     }
     const token = createJWT(user);
-    res.json(token);
+    res.status(200).json(createJWT(user));
   } catch (err) {
-    res.status(500).json({ message: "Internal Server Error" });
+    res.status(400).json({ msg: e.message, reason: "Bad Credentials" });
   }
 }
 

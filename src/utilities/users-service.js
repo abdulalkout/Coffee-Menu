@@ -40,7 +40,6 @@ export function getToken() {
     return token;
   } catch (error) {
     // Handle decoding errors
-    console.error("Error decoding token:", error);
     localStorage.removeItem("token");
     return null;
   }
